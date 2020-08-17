@@ -1,0 +1,117 @@
+﻿@model FootballMathces.Models.Match
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = null;
+}
+
+<div class="modal fade" id="details-match" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Match Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="Create">
+                            <input name="IsValid" type="hidden" value="@ViewData["Result"]" />
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="row d-flex d-flex justify-content-around">
+                                        <h5>@Html.DisplayFor(model => model.Host.Name)</h5>
+                                        @{int d = (int)Model.Status;}
+                                        @if (d.Equals(3))
+                                        {
+                                        <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#add-goal" data-url="@Url.Action($"Edit?side=host&id={Model.Id}", "PlayerInMatches")">Add goal</button>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-md-4 align-items-center">
+                                    <div class="row d-flex justify-content-center">
+                                        <h3>@Html.DisplayFor(model => model.HostGoals)</h3>
+                                        <h3>-</h3>
+                                        <h3>@Html.DisplayFor(model => model.GuestGoals)</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 ">
+                                    <div class="row d-flex justify-content-around">
+                                        <h5>@Html.DisplayFor(model => model.Guest.Name)</h5>
+                                        @if (d.Equals(3))
+                                        {
+                                            <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#add-goal" data-url="@Url.Action($"Edit?side=guest&id={Model.Id}", "PlayerInMatches")">Add goal</button>
+                                        }
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-5" style=" height: 250px; overflow-y: auto;">
+                                    <label asp-for="HostPlayers" class="control-label"></label>
+                                    
+                                    <table class="table">
+                                        <tr>
+                                            <th>Player</th>
+                                            <th>Goals</th>
+                                        </tr>
+                                        @for (var i = 0; i < Model.HostPlayers.Count(); i++)
+                                        {
+                                            <tr>
+                                                <td>@Model.HostPlayers[i].Player.Name</td>
+                                                <td>
+                                                    @Model.HostPlayers[i].Goals
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                                <div class="col-md-2"> </div>
+                                <div class="form-group col-md-5" style=" height: 250px; overflow-y: auto;">
+                                    <label asp-for="GuestPlayers" class="control-label"></label>
+                                    <span asp-validation-for="GuestPlayers" class="text-danger"></span>
+                                    <table class="table">
+                                        <tr>
+                                            <th>Player</th>
+                                            <th>Goals</th>
+                                        </tr>
+                                        @for (var i = 0; i < Model.GuestPlayers.Count(); i++)
+                                        {
+                                            <tr>
+                                                <td>@Model.GuestPlayers[i].Player.Name</td>
+                                                <td>
+                                                    @Model.GuestPlayers[i].Goals
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                @{int d1 = (int)Model.Status;}
+                @if (d1.Equals(3))
+                {
+                    <form asp-action="Finish">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="button" id="match-finish" data-save="button" class="btn btn-primary">Finish</button>
+                    </form>
+                }
+                @if (d1.Equals(0) || d1.Equals(3)) { 
+                    <form asp-action="Cancel">
+                        <input type="hidden" asp-for="Id" />
+                        <button type="button" id="match-cancel" data-save="button" class="btn btn-danger">Cancel</button>
+                    </form>
+                }
+            </div>
+               
+        </div>
+    </div>
+</div>

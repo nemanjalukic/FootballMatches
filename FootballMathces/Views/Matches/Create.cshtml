@@ -1,0 +1,101 @@
+﻿@model FootballMathces.Models.Match
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+
+<div class="modal fade" id="add-match" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Match</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="Create" onsubmit="return false">
+                            <input name="IsValid" type="hidden" value="@ViewData["Result"]" />
+                            
+                            <div asp-validation-summary="None" class="text-danger"></div>
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label asp-for="HostId" class="control-label"></label>
+                                    <select asp-for="HostId" class="form-control" asp-items="ViewBag.HostId"></select>
+                                    <span asp-validation-for="HostId" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="Time" class="control-label"></label>
+                                        <input asp-for="Time" class="form-control" />
+                                        <span asp-validation-for="Time" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Place" class="control-label"></label>
+                                        <input asp-for="Place" class="form-control" />
+                                        <span asp-validation-for="Place" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label asp-for="GuestId" class="control-label"></label>
+                                    <select asp-for="GuestId" class="form-control" asp-items="ViewBag.GuestId"></select>
+                                    <span asp-validation-for="GuestId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <label asp-for="HostPlayers" class="control-label"></label>
+                                        <span asp-validation-for="HostPlayers" class="text-danger"></span>
+                                    </div>
+                                    <div style=" height: 250px; overflow-y: auto;">
+                                        <table class="table" style=" height: 250px; overflow-y: auto;">
+                                            @for (var i = 0; i < Model.HostPlayers.Count(); i++)
+                                            {
+                                                <tr>
+                                                    <td>@Model.HostPlayers[i].Player.Name</td>
+                                                    <td>
+                                                        <input value="@Model.HostPlayers[i].PlayerId" class="form-control" name="playersHost" type="checkbox" @(Html.Raw(Model.HostPlayers[i].IsChecked ? "checked=\"checked\"" : "")) />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-4"> </div>
+                                    <div class="col-md-4">
+                                        <div class="row">
+                                            <label asp-for="GuestPlayers" class="control-label"></label>
+                                            <span asp-validation-for="GuestPlayers" class="text-danger"></span>
+                                        </div>
+                                        <div style=" height: 250px; overflow-y: auto;">
+                                            <table class="table">
+                                                @for (var i = 0; i < Model.GuestPlayers.Count(); i++)
+                                                {
+                                                    <tr>
+                                                        <td>@Model.GuestPlayers[i].Player.Name</td>
+                                                        <td>
+                                                            <input value="@Model.GuestPlayers[i].PlayerId" class="form-control" name="playersGuest" type="checkbox" @(Html.Raw(Model.GuestPlayers[i].IsChecked ? "checked=\"checked\"" : "")) />
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>

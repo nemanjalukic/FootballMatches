@@ -1,0 +1,100 @@
+﻿@model PaginatedList<FootballMathces.Models.Match>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+<div id="modal-placeholder"></div>
+<div id="modal-placeholder2"></div>
+
+
+
+<button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#add-match" data-url="@Url.Action("Create")">
+    Create new match
+</button>
+
+<div class="row justify-content-center">
+    <button class="roundbutton Finished" disabled></button> Finished
+    <button class="roundbutton NotStarted" disabled></button> Not Started
+    <button class="roundbutton InProgress" disabled></button> In Progress
+    <button class="roundbutton Canceled" disabled></button> Canceled
+
+</div>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Status
+            </th>
+            <th>
+                Host
+            </th>
+            <th>
+                Guest
+            </th>
+            <th>
+                Time
+            </th>
+            <th>
+                Place
+            </th>
+            <th>
+                Result
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <button class="roundbutton @item.Status" disabled></button>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Host.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Guest.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Place)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HostGoals)
+                    -
+                    @Html.DisplayFor(modelItem => item.GuestGoals)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-toggle="ajax-modal" data-target="#details-match" data-url="@Url.Action($"Details/{item.Id}")">
+                        Details
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

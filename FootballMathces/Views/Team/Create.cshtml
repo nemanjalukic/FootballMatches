@@ -1,0 +1,50 @@
+﻿@model FootballMathces.Models.Team
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+<div class="modal fade" id="add-team" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Team</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Create" enctype="multipart/form-data" id="createForm" onsubmit="return false">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="text-center">
+                        <img id="imagePreview" src="~/img/avatar.jpg" height="200" alt="Image preview..." class="rounded mx-auto d-block" />
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="ImageFile" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-12">
+                            <div class="custom-file">
+                                <input asp-for="ImageFile" class="form-control custom-file-input" id="inputButton" accept="image/*">
+                                <label class="custom-file-label" id="inputLabel">Choose File...</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
